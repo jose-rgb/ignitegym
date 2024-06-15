@@ -1,4 +1,4 @@
-import { ReactNode, createContext } from "react";
+import { ReactNode, createContext, useState } from "react";
 import { UserDTO } from "@dtos/UserDTO";
 
 export type AuthContextDataProps = {
@@ -12,15 +12,15 @@ type AuthContextProviderProps = {
 export const AuthContext = createContext<AuthContextDataProps>({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
+    const [user, setUser] = useState({
+        id: '1',
+        name: 'José Ricardo',
+        email: 'catce.2020111tads0360@aluno.ifpi.edu.br',
+        avatar: 'jose.png'
+    });
+
     return(
-        <AuthContext.Provider value={{
-            user: {
-              id: '1',
-              name: 'José Ricardo',
-              email: 'catce.2020111tads0360@aluno.ifpi.edu.br',
-              avatar: 'jose.png'
-            }
-          }}>
+        <AuthContext.Provider value={{ user }}>
             {children}
         </AuthContext.Provider>
     );

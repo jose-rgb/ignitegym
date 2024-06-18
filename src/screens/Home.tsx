@@ -14,7 +14,7 @@ import { ExerciseCard } from "@components/ExerciseCard";
 
 export function Home(){
     const [groups, setGroups] = useState<string[]>([]);
-    const [groupSelected, setGroupSelected] = useState('costas');
+    const [groupSelected, setGroupSelected] = useState('antebraço');
     const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
 
     const toast = useToast();
@@ -103,6 +103,7 @@ export function Home(){
                     renderItem={({ item }) => (
                         <ExerciseCard 
                             onPress={handleOpenExerciseDetails}
+                            data={item}
                         />
                     )}
                     showsVerticalScrollIndicator={false}

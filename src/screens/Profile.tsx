@@ -4,6 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { FileInfo } from "expo-file-system";
+import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useAuth } from "@hooks/useAuth";
 
@@ -18,11 +20,17 @@ const PHOTO_SIZE = 33;
 
 type FormDataProps = {
     name: string;
-    email: string;
-    password: string;
-    old_password: string;
-    confirm_password: string;
+    email?: string;
+    password?: string;
+    old_password?: string;
+    confirm_password?: string;
 }
+
+const profileSchema = yup.object({
+    name: yup.string().required('Informe o nome'),
+    password: yup.string().min(6, 'A senha deve ter pelo menos 6 dígitos!').nullable().transform((value) => !!value ? value : null),
+    confirm_password: yup.string().nullable().transform((value) => !!value ? value : null).oneOf([yup.ref('password')], 'Senha não confere!')
+})
 
 export function Profile(){
     const [photoIsLoading, setPhotoIsLoading] = useState(false);
@@ -30,11 +38,12 @@ export function Profile(){
 
     const toast =  useToast();
     const { user } = useAuth();
-    const {control, handleSubmit} = useForm<FormDataProps>({
+    const {control, handleSubmit, formState: { errors }} = useForm<FormDataProps>({
         defaultValues: {
             name: user.name,
             email: user.email
-        }
+        },
+        resolver: yupResolver(profileSchema)
     });
 
     async function handleUserPhotoSelect(){
@@ -123,6 +132,7 @@ export function Profile(){
                                 bg="gray.600"
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.name?.message}
                             />
                         )}
                     />
@@ -138,6 +148,8 @@ export function Profile(){
                                 isDisabled
                                 readOnly
                                 fontSize={15}
+                                onChangeText={onChange}
+                                value={value}
                             />
                         )}
                     />
@@ -160,6 +172,7 @@ export function Profile(){
                         )}
                     />
 
+
                     <Controller
                         control={control}
                         name="password"
@@ -169,9 +182,11 @@ export function Profile(){
                                 placeholder="Nova senha"
                                 secureTextEntry
                                 onChangeText={onChange}
+                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
+
 
                     <Controller
                         control={control}
@@ -182,6 +197,7 @@ export function Profile(){
                                 placeholder="Confirme a nova senha"
                                 secureTextEntry
                                 onChangeText={onChange}
+                                errorMessage={errors.confirm_password?.message}
                             />
                         )}
                     />

@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.3",
     "@hookform/resolvers": "^3.6.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
@@ -27,8 +28,7 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
-    "yup": "^1.4.0",
-    "@react-native-async-storage/async-storage": "1.23.1"
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
